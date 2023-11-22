@@ -20,8 +20,8 @@ class Nestable extends Component<NestableProps, NestableState> {
   el: Element | null = null;
   elCopyStyles: CSSProperties | null = null;
   mouse = {
-    last: { x: 0 },
-    shift: { x: 0 },
+    last: { x: 0, y: 0 },
+    shift: { x: 0, y: 0 },
   };
 
   constructor(props: NestableProps) {
@@ -497,25 +497,32 @@ class Nestable extends Component<NestableProps, NestableState> {
         elCopy.style[key] = transformProps[key];
       });
 
+      const diffY = clientY - this.mouse.last.y;
       const diffX = clientX - this.mouse.last.x;
       if (
-        (diffX >= 0 && this.mouse.shift.x >= 0) ||
-        (diffX <= 0 && this.mouse.shift.x <= 0)
+          (diffY >= 0 && this.mouse.shift.y >= 0) ||
+          (diffY <= 0 && this.mouse.shift.y <= 0)
       ) {
+        this.mouse.shift.y += diffY;
         this.mouse.shift.x += diffX;
       } else {
+        this.mouse.shift.y = 0;
         this.mouse.shift.x = 0;
       }
+      this.mouse.last.y = clientY;
       this.mouse.last.x = clientX;
 
-      if (Math.abs(this.mouse.shift.x) > threshold) {
-        if (this.mouse.shift.x > 0) {
+      if (Math.abs(this.mouse.shift.y) > threshold || Math.abs(this.mouse.shift.x) > 0 ) {
+        if (Math.abs(this.mouse.shift.y) > 0 && Math.abs(this.mouse.shift.x) > 0) {
           this.tryIncreaseDepth(dragItem);
         } else {
           this.tryDecreaseDepth(dragItem);
         }
 
-        this.mouse.shift.x = 0;
+        if (Math.abs(this.mouse.shift.y) > threshold) {
+          this.mouse.shift.x = 0
+          this.mouse.shift.y = 0;
+        }
       }
     }
   };

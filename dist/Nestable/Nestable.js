@@ -74,8 +74,8 @@ var Nestable = /** @class */ (function (_super) {
         _this.el = null;
         _this.elCopyStyles = null;
         _this.mouse = {
-            last: { x: 0 },
-            shift: { x: 0 },
+            last: { x: 0, y: 0 },
+            shift: { x: 0, y: 0 },
         };
         // ––––––––––––––––––––––––––––––––––––
         // Public Methods
@@ -176,23 +176,30 @@ var Nestable = /** @class */ (function (_super) {
                 Object.keys(transformProps).forEach(function (key) {
                     elCopy.style[key] = transformProps[key];
                 });
+                var diffY = clientY - _this.mouse.last.y;
                 var diffX = clientX - _this.mouse.last.x;
-                if ((diffX >= 0 && _this.mouse.shift.x >= 0) ||
-                    (diffX <= 0 && _this.mouse.shift.x <= 0)) {
+                if ((diffY >= 0 && _this.mouse.shift.y >= 0) ||
+                    (diffY <= 0 && _this.mouse.shift.y <= 0)) {
+                    _this.mouse.shift.y += diffY;
                     _this.mouse.shift.x += diffX;
                 }
                 else {
+                    _this.mouse.shift.y = 0;
                     _this.mouse.shift.x = 0;
                 }
+                _this.mouse.last.y = clientY;
                 _this.mouse.last.x = clientX;
-                if (Math.abs(_this.mouse.shift.x) > threshold) {
-                    if (_this.mouse.shift.x > 0) {
+                if (Math.abs(_this.mouse.shift.y) > threshold || Math.abs(_this.mouse.shift.x) > 0) {
+                    if (Math.abs(_this.mouse.shift.y) > 0 && Math.abs(_this.mouse.shift.x) > 0) {
                         _this.tryIncreaseDepth(dragItem);
                     }
                     else {
                         _this.tryDecreaseDepth(dragItem);
                     }
-                    _this.mouse.shift.x = 0;
+                    if (Math.abs(_this.mouse.shift.y) > threshold) {
+                        _this.mouse.shift.x = 0;
+                        _this.mouse.shift.y = 0;
+                    }
                 }
             }
         };

@@ -3,11 +3,20 @@
 }
 .nestable .nestable-list {
   margin: 0;
-  padding: 0 0 0 40px;
+  padding: 0;
   list-style-type: none;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  width: 100%;
 }
 .nestable > .nestable-list {
   padding: 0;
+  display: block;
+  width: 100%;
 }
 .nestable-item,
 .nestable-item-copy {
@@ -24,6 +33,22 @@
 .nestable-item--children-no-collapse .nestable-item-icon,
 .nestable-item-copy--children-no-collapse .nestable-item-icon {
   cursor: inherit;
+}
+.nestable-item-name {
+  height: 100%;
+  width: 100%;
+}
+.nestable-item,
+.nestable-item-copy {
+  width: 100%;
+  margin-top: 20px;
+}
+.nestable-item .nestable-list,
+.nestable-item-copy .nestable-list {
+  margin-top: 0;
+}
+ol .nestable-list > .nestable-item {
+  margin-top: 0;
 }
 .nestable-item {
   position: relative;

@@ -7,9 +7,11 @@ declare class Nestable extends Component<NestableProps, NestableState> {
     mouse: {
         last: {
             x: number;
+            y: number;
         };
         shift: {
             x: number;
+            y: number;
         };
     };
     constructor(props: NestableProps);

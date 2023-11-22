@@ -19,6 +19,7 @@ module.exports = {
   },
   "rules": {
     "no-console": "warn",
-    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "no-unused-vars": ["warn", { "ignoreRestSiblings": true }],
+    "no-undef": "warn"
   },
 };
